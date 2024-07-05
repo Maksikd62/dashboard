@@ -10,7 +10,7 @@ const Footer = () => {
         <Box
             bgcolor={theme.palette.primary.light}
             sx={{
-                position: "fixed",
+                position: "relative",
                 bottom: 0,
                 textAlign: "center",
                 width: "100%",

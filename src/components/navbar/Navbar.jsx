@@ -30,12 +30,16 @@ const Navbar = () => {
                     xs={8}
                     sx={{ justifyContent: "space-evenly" }}
                 >
-                    <Button sx={btnPageStyle} onClick={clickHandler}>
-                        Головна сторінка
-                    </Button>
-                    <Button sx={btnPageStyle} onClick={clickHandler}>
-                        Користувачі
-                    </Button>
+                    <Link to="/">
+                        <Button sx={btnPageStyle} onClick={clickHandler}>
+                            Головна сторінка
+                        </Button>
+                    </Link>
+                    <Link to="user">
+                        <Button sx={btnPageStyle} onClick={clickHandler}>
+                            Користувачі
+                        </Button>
+                    </Link>
                     <Button sx={btnPageStyle} onClick={clickHandler}>
                         Сторінка 2
                     </Button>
@@ -55,8 +59,8 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                        <Button sx={{ color: "black" }}>Профіль</Button>
-                            </>
+                            <Button sx={{ color: "black" }}>Профіль</Button>
+                        </>
                     )}
                 </Grid>
             </Grid>

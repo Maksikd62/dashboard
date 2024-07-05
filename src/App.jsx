@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
 import MainPage from "./pages/mainPage/MainPage";
 import NotFound from "./pages/notFound/NotFound";
 import { ThemeProvider } from "@mui/material/styles";
@@ -10,6 +8,7 @@ import SignInPage from "./pages/auth/signin/SignInPage";
 import SignUp from "./pages/auth/signup/SignUp";
 import { Routes, Route } from "react-router-dom";
 import DefaulLayout from "./components/layouts/default/DefaultLayout";
+import UsersPage from "./pages/user/UsersPage";
 
 const App = () => {
     return (
@@ -17,7 +16,14 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<DefaulLayout />}>
                     <Route index element={<MainPage />} />
-                    <Route path="/createuser" element={<CreateUserPage />} />
+                    <Route path="user">
+                        <Route index element={<UsersPage />} />
+                        <Route
+                            path="createuser"
+                            element={<CreateUserPage />}
+                        />
+                    </Route>
+
                     <Route path="/signin" element={<SignInPage />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="*" element={<NotFound />} />
