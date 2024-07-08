@@ -9,8 +9,11 @@ import {
   Paper,
   Container,
   TablePagination,
-  Box
+  Box,
+  Button
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import {Link} from "react-router-dom";
 
 const users = [
   {
@@ -137,6 +140,9 @@ const UsersPage = () => {
               <TableCell sx={{ fontWeight: "bold" }} align="center">
                 Full name
               </TableCell>
+              <TableCell sx={{ fontWeight: "bold" }} align="center">
+                Edit
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -149,13 +155,28 @@ const UsersPage = () => {
                   <TableCell align="center">{item.email}</TableCell>
                   <TableCell align="center">{item.role}</TableCell>
                   <TableCell align="center">{`${item.name} ${item.surname}`}</TableCell>
+                  <TableCell align="center">
+                    <Link
+                      to={`createuser?userId=${item.id}&email=${item.email}`}
+                    >
+                      <EditIcon />
+                    </Link>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-      <TablePagination
+      <Button style={{ border: "1px solid", marginTop: "10px" }}>
+        Add user
+      </Button>
+      <Button
+        style={{ border: "1px solid", marginTop: "10px", marginLeft: "10px" }}
+      >
+        Delete user
+      </Button>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <TablePagination
           component="div"
           count={users.length}
           page={page}
@@ -163,7 +184,9 @@ const UsersPage = () => {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           rowsPerPageOptions={[5, 10, 15, 25]}
-          labelDisplayedRows={({ from, to, count, page }) => `Page ${page + 1} of ${Math.ceil(count / rowsPerPage)}`}
+          labelDisplayedRows={({ from, to, count, page }) =>
+            `Page ${page + 1} of ${Math.ceil(count / rowsPerPage)}`
+          }
         />
       </Box>
     </Container>
