@@ -9,6 +9,9 @@ import SignUp from "./pages/auth/signup/SignUp";
 import { Routes, Route } from "react-router-dom";
 import DefaulLayout from "./components/layouts/default/DefaultLayout";
 import UsersPage from "./pages/user/UsersPage";
+import CharactersPage from "./pages/characters/CharactersPage";
+
+import "./App.css";
 
 const App = () => {
     return (
@@ -16,8 +19,13 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<DefaulLayout />}>
                     <Route index element={<MainPage />} />
+                    <Route path="characters" element={<CharactersPage />} />
                     <Route path="user">
                         <Route index element={<UsersPage />} />
+                        {/* <Route
+                            path="createuser/:userId"
+                            element={<CreateUserPage />}
+                        /> */}
                         <Route
                             path="createuser"
                             element={<CreateUserPage />}
@@ -34,3 +42,7 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
