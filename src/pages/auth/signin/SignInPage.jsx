@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Avatar,
     Button,
@@ -15,6 +15,8 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { GoogleLogin } from "@react-oauth/google";
+//import { jwtDecode } from "jwt-decode";
 
 const SignInPage = () => {
     // const [textShow, setTextShow] = useState(true);
@@ -24,9 +26,22 @@ const SignInPage = () => {
     // submit method
     const handleSubmit = (values) => {
         window.localStorage.setItem("user", JSON.stringify(values));
-
         navigate("/");
     };
+
+    // google
+    const googleSuccesHandler = (credentials) => {
+        const token = credentials.credential;
+        // const userData = jwtDecode(token);
+        // console.log(userData);
+
+        localStorage.setItem("auth", token)
+        navigate("/");
+    }
+
+    const gooleErrorHandler = () => {
+        console.log("Google auth error");
+    }
 
     // yup validation Schema
     const validationSchema = Yup.object({
@@ -52,7 +67,7 @@ const SignInPage = () => {
     });
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" sx={{ mb: 10 }}>
             <CssBaseline />
             <Box
                 sx={{
@@ -122,15 +137,26 @@ const SignInPage = () => {
                     >
                         Sign In
                     </Button>
+                    <Box sx={{mb: 2}}>
+                        <GoogleLogin
+                            size="large"
+                            width="400px"
+                            onSuccess={googleSuccesHandler}
+                            onError={gooleErrorHandler}
+                        />
+                    </Box>
                     <Grid container>
                         <Grid item xs>
                             Forgot password?
                         </Grid>
-                        <Grid item>Don't have an account? Sign Up</Grid>
+                        <Grid item>
+                            <Link to="/signup">
+                                Don't have an account? Sign Up
+                            </Link>
+                        </Grid>
                     </Grid>
                 </Box>
             </Box>
-            {/* { textShow ? <Typography variant="h3">Dynamic text</Typography> : <h1>False</h1> } */}
         </Container>
     );
 };
