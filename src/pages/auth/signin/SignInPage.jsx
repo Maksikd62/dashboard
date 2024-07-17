@@ -16,12 +16,16 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
-//import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { useAction } from "../../../hooks/useAction";
 
 const SignInPage = () => {
     // const [textShow, setTextShow] = useState(true);
 
+    const { signIn } = useAction();
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // submit method
     const handleSubmit = (values) => {
@@ -32,16 +36,16 @@ const SignInPage = () => {
     // google
     const googleSuccesHandler = (credentials) => {
         const token = credentials.credential;
-        // const userData = jwtDecode(token);
-        // console.log(userData);
+        
+        signIn(token);
 
-        localStorage.setItem("auth", token)
+        localStorage.setItem("auth", token);
         navigate("/");
-    }
+    };
 
     const gooleErrorHandler = () => {
         console.log("Google auth error");
-    }
+    };
 
     // yup validation Schema
     const validationSchema = Yup.object({
@@ -137,7 +141,7 @@ const SignInPage = () => {
                     >
                         Sign In
                     </Button>
-                    <Box sx={{mb: 2}}>
+                    <Box sx={{ mb: 2 }}>
                         <GoogleLogin
                             size="large"
                             width="400px"

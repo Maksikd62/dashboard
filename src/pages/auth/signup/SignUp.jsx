@@ -16,9 +16,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
-//import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { useAction } from "../../../hooks/useAction";
 
 const SignUpPage = () => {
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .required("Пошта обов'я зкова")
@@ -31,6 +33,8 @@ const SignUpPage = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { signUp } = useAction();
   const submitHadler = (values) => {
     console.log(values);
     navigate("/");
@@ -38,8 +42,7 @@ const SignUpPage = () => {
 
   const googleSuccesHandler = (credentials) => {
     const token = credentials.credential;
-    // const userData = jwtDecode(token);
-    // console.log(userData);
+    signUp(token);
 
     localStorage.setItem("auth", token);
     navigate("/");

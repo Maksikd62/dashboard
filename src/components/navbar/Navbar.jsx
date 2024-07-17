@@ -3,7 +3,6 @@ import {
     AppBar,
     Button,
     Grid,
-    Box,
     Menu,
     MenuItem,
     Typography,
@@ -13,20 +12,34 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "./images/logo.png";
 import { btnPageStyle } from "./style";
-import { Link } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useSelector } from "react-redux";
+import { useAction } from "../../hooks/useAction";
+import { toast } from "react-toastify";
 
 const pages = [
     { id: "1", title: "Головна сторінка", url: "/" },
     { id: "2", title: "Користувачі", url: "user" },
     { id: "3", title: "Персонажі", url: "characters" },
-    { id: "4", title: "Сторінка 3", url: "/" },
+    { id: "4", title: "Сторінка 3", url: "counter" },
 ];
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [user, setUser] = useState(null);
+    const { isAuth, user } = useSelector((state) => state.authReducer);
+    const { theme } = useSelector((state) => state.themingReducer);
+    const { logout, setTheme } = useAction();
+    const navigate = useNavigate();
+
+    // auth
+    const logoutHandler = () => {
+        handleCloseUserMenu();
+        logout();
+        navigate("signin");
+    };
 
     // navmenu
     const handleOpenNavMenu = (event) => {
@@ -46,11 +59,19 @@ const Navbar = () => {
         setAnchorElUser(null);
     };
 
+    // theming
+    const changeTheme = () => {
+        const value = theme === "light" ? "dark" : "light";
+        setTheme(value);
+        toast.success(`${value} theme`);
+    };
+
     useEffect(() => {
-        const token = localStorage.getItem("auth");
-        if (token != null) {
-            const data = jwtDecode(token);
-            setUser(data);
+        const themeLocal = localStorage.getItem("theme");
+        if (themeLocal != null) {
+            if (themeLocal != "light") {
+                setTheme(themeLocal);
+            }
         }
     }, []);
 
@@ -140,9 +161,18 @@ const Navbar = () => {
                         </Link>
                     ))}
                 </Grid>
-                <Grid item xs={3} sx={{ textAlign: "end", pr: 3 }}>
-                    <Box>
-                        {user === null ? (
+                <Grid item container xs={3} sx={{ textAlign: "end", pr: 3 }}>
+                    <Grid item xs={2} sx={{ textAlign: "end" }}>
+                        <IconButton onClick={changeTheme} color="inherit">
+                            {theme === "dark" ? (
+                                <Brightness7Icon />
+                            ) : (
+                                <Brightness4Icon />
+                            )}
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={10} sx={{ textAlign: "end" }}>
+                        {!isAuth ? (
                             <>
                                 <Link to="/signin">
                                     <Button sx={{ color: "black" }}>
@@ -187,7 +217,7 @@ const Navbar = () => {
                                             </Typography>
                                         </Link>
                                     </MenuItem>
-                                    <MenuItem onClick={handleCloseUserMenu}>
+                                    <MenuItem onClick={logoutHandler}>
                                         <Typography textAlign="center">
                                             Logout
                                         </Typography>
@@ -195,7 +225,7 @@ const Navbar = () => {
                                 </Menu>
                             </>
                         )}
-                    </Box>
+                    </Grid>
                 </Grid>
             </Grid>
         </AppBar>
