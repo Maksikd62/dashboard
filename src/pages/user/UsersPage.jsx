@@ -15,99 +15,13 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
-
-const users = [
-  {
-    id: 1,
-    userName: "admin",
-    email: "admin@dash.com",
-    role: "admin",
-    name: "admin",
-    surname: "admin",
-  },
-  {
-    id: 2,
-    userName: "user1",
-    email: "user1@dash.com",
-    role: "user",
-    name: "userName1",
-    surname: "userSurname1",
-  },
-  {
-    id: 3,
-    userName: "user2",
-    email: "user2@dash.com",
-    role: "user",
-    name: "userName2",
-    surname: "userSurname2",
-  },
-  {
-    id: 4,
-    userName: "user3",
-    email: "user3@dash.com",
-    role: "user",
-    name: "userName3",
-    surname: "userSurname3",
-  },
-  {
-    id: 5,
-    userName: "user4",
-    email: "user4@dash.com",
-    role: "user",
-    name: "userName4",
-    surname: "userSurname4",
-  },
-  {
-    id: 6,
-    userName: "user5",
-    email: "user5@dash.com",
-    role: "user",
-    name: "userName5",
-    surname: "userSurname5",
-  },
-  {
-    id: 7,
-    userName: "user6",
-    email: "user6@dash.com",
-    role: "user",
-    name: "userName6",
-    surname: "userSurname6",
-  },
-  {
-    id: 8,
-    userName: "user7",
-    email: "user7@dash.com",
-    role: "user",
-    name: "userName7",
-    surname: "userSurname7",
-  },
-  {
-    id: 9,
-    userName: "user8",
-    email: "user8@dash.com",
-    role: "user",
-    name: "userName8",
-    surname: "userSurname8",
-  },
-  {
-    id: 10,
-    userName: "user9",
-    email: "user5@dash.com",
-    role: "user",
-    name: "userName9",
-    surname: "userSurname9",
-  },
-  {
-    id: 11,
-    userName: "user10",
-    email: "user10@dash.com",
-    role: "user",
-    name: "userName10",
-    surname: "userSurname10",
-  },
-];
+import { useSelector, useDispatch } from 'react-redux';
+import { useAction } from "../../hooks/useAction";
 
 const UsersPage = () => {
+  const users = useSelector((state) => state.usersReducer.users);
+  const { deleteUser } = useAction();
+  const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -118,6 +32,10 @@ const UsersPage = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleDelete = (id) => {
+    deleteUser(id);
   };
 
   return (
@@ -167,8 +85,7 @@ const UsersPage = () => {
                     </Link>
                   </TableCell>
                   <TableCell align="center">
-                    <Button>
-                      {" "}
+                    <Button onClick={() => handleDelete(item.id)}>
                       <DeleteIcon />
                     </Button>
                   </TableCell>
