@@ -33,7 +33,6 @@ const SignUpPage = () => {
   });
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { signUp } = useAction();
   const submitHadler = (values) => {
     console.log(values);
@@ -42,8 +41,8 @@ const SignUpPage = () => {
 
   const googleSuccesHandler = (credentials) => {
     const token = credentials.credential;
+    
     signUp(token);
-
     localStorage.setItem("auth", token);
     navigate("/");
   };

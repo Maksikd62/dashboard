@@ -39,6 +39,7 @@ const SignInPage = () => {
         
         signIn(token);
 
+        
         localStorage.setItem("auth", token);
         navigate("/");
     };
